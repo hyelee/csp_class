@@ -15,30 +15,36 @@ public class IDCheckServlet extends HttpServlet {
 		resp.setCharacterEncoding("EUC-KR");
 		resp.setContentType("text/plain");
 
-		int check = 0;
+		// int check = 0;
 		String id = req.getParameter("id");
-		resp.getWriter().println(id);
+		boolean success = false;
 
 		MyPersistenceManger.getManager();
 		Query qry = MyPersistenceManger.getManager()
 				.newQuery(UserAccount.class);
 		List<UserAccount> userAccount = (List<UserAccount>) qry.execute();
-	
+
 		for (UserAccount a : userAccount) {
-			//userAccount.get(i)
-		if (a.getUserID().equals(id)) {
+			if (!a.getUserID().equals(null)) {
+				if (a.getUserID().equals(id)) {
+					success = true;
+				} else if (!a.getUserID().equals(id)) {
+					success = false;
+				}
+			}
 
-		check= 1;
-		resp.getWriter().println("이미사용중입니다.");
-			return;
-		}
-			else  {
-				check=-1;	
-			}			
+			else {
+				success = false;
+				break;
+			}
 		}
 
-			 if(check==-1)
-				resp.getWriter().println("사용가능합니다.");
-	
+		resp.getWriter().println(id);
+
+		if (!success)
+			resp.getWriter().println("사용가능합니다.");
+		else if (success)
+			resp.getWriter().println("이미사용중입니다.");
+
 	}
 }

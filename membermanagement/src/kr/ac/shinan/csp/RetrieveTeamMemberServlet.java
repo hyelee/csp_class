@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +18,26 @@ public class RetrieveTeamMemberServlet extends HttpServlet {
 		HttpSession session= req.getSession();
 		List<TeamMember> memberList = MemberManager.getAllMembers();
 		String sid = (String) session.getAttribute("sid");
-		
+		Cookie[] cookieList= req.getCookies();
+for(Cookie c: cookieList){
+			
+			if(c.getValue()!=null){
+				resp.getWriter().println("    cookie: "+c.getValue()+"  \n");
+			}
+}
+MyPersistenceManger.getManager();
+Query qry = MyPersistenceManger.getManager()
+		.newQuery(UserLoginToken.class);
+List<UserLoginToken> ult = (List<UserLoginToken>) qry.execute();
+for (UserLoginToken a : ult) {
+	if(a.getToken()!=null){
+		resp.getWriter().println("   token: "+a.getToken()+"   \n");
+	}
+}
+
 		resp.setCharacterEncoding("EUC-KR");
 		resp.setContentType("text/plain");
-		resp.getWriter().println("welcome !!  "+sid+"¥‘");
+		resp.getWriter().println("   welcome  : "+sid+"!!!!");
 		resp.getWriter().println("<head><style>");
 		resp.getWriter().println(
 				"table,th,td{  border: 1px solid black\n;"
@@ -48,7 +65,7 @@ public class RetrieveTeamMemberServlet extends HttpServlet {
 							+ tm.getGitid() + "</td>");
 			resp.getWriter().println(
 					"<td>" + "<a href = '/DeleteResultServlet?key="
-							+ tm.getKey() + "'>" + "ªË¡¶ " + "</a>" + "</td>");
+							+ tm.getKey() + "'>" + "delete " + "</a>" + "</td>");
 			resp.getWriter().println("</tr>");
 		}
 

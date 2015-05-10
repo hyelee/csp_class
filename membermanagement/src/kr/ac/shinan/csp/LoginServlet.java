@@ -1,6 +1,9 @@
 package kr.ac.shinan.csp;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,13 +59,22 @@ if(!success)
 
 if(success)
 {
-	if(req.getParameter("remeber")!=null){
+	if(req.getParameter("remember")!=null){
 	String uuid= UUID.randomUUID().toString();
 	Cookie cookie = new Cookie("token",uuid);
+	cookie.setMaxAge((24*60*30)*60);
+	resp.addCookie(cookie);
+	session.setMaxInactiveInterval(2592000);
 	String date = null;
+	//현재시간 
+	Calendar calendar = Calendar.getInstance();
+	 calendar.getTime();
+	//expiredate+30일
+	calendar.add(Calendar.DATE,+30);
+	date=(new SimpleDateFormat("yyyyMMdd").format( calendar.getTime()));
 	UserLoginToken ult = new UserLoginToken(uuid,id,date);
 	MyPersistenceManger.getManager().makePersistent(ult);
-//쿠키 30일동안 저장하는 거
+//쿠키 ,세션30일동안 저장하는 거
 	
 	
 	}
