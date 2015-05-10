@@ -1,0 +1,23 @@
+
+<html>
+
+<body>
+Sign up!
+
+
+<form name='form1' method='post' action='/signup'>
+ID: <input type='text' name='id'><input type='button' value='id check' onclick='id_check()';><br>
+Name : <input type='text' name='name'><br>
+Password : <input type='password' name='password'><br>
+<input type='submit' value='Sign up'>
+</form>
+</body>
+<script>
+function id_check(){
+
+	window.open('idcheck?id='+document.form1.id.value,'','width=200, height=100');
+	return true();
+	}
+</script>
+</html>
+
